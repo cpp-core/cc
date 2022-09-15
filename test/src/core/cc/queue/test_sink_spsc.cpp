@@ -43,8 +43,8 @@ TEST(SinkSpSc, TypeToType)
     check<std::uint16_t>();
     check<std::uint32_t>();
     check<std::uint64_t>();
-    check<real32>();
-    check<real64>();
+    check<float>();
+    check<double>();
 }
 
 int main(int argc, char *argv[])
