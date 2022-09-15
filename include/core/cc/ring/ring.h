@@ -2,6 +2,8 @@
 //
 
 #pragma once
+#include <cassert>
+#include <vector>
 #include "core/cc/ring/sequence.h"
 
 namespace core::cc::ring {
@@ -34,7 +36,7 @@ public:
     
 private:
     size_t mask_;
-    vector<T> data_;
+    std::vector<T> data_;
     sequence_t end_;
 };
 
