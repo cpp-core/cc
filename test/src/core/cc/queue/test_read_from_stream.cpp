@@ -10,7 +10,7 @@ constexpr size_t NumberSamples = 32;
 
 TEST(ReadFromStream, Basic)
 {
-    auto g = coro::sampler<string>(0, 8 * 1024);
+    auto g = coro::sampler<std::string>(0, 8 * 1024);
     for (auto str : std::move(g) | coro::take(NumberSamples))
     {
     	std::stringstream ss(str);

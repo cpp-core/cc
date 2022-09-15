@@ -9,7 +9,7 @@
 
 using ::testing::StaticAssertTypeEq;
 
-void consumer(auto& queue, const ints& data)
+void consumer(auto& queue, const std::vector<int>& data)
 {
     int i = 0, n;
     while (queue.pop(n))
@@ -61,8 +61,8 @@ TEST(QueueSpSc, Throughput)
 {
     for (auto i = 0; i < 1; ++i)
     {
-	string input(1'000, ' ');
-	string output(1'000, '.');
+	std::string input(1'000, ' ');
+	std::string output(1'000, '.');
 	core::cc::queue::SpSc<char> queue{4,4};
 	core::cc::scoped_task producer([&]() { queue.push(input); queue.push_sentinel(); });
 	auto ptr = output.data();

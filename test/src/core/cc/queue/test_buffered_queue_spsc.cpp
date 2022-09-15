@@ -8,7 +8,7 @@
 
 using ::testing::StaticAssertTypeEq;
 
-void consumer(auto& queue, const ints& data)
+void consumer(auto& queue, const std::vector<int>& data)
 {
     int i = 0, n;
     while (queue.active())

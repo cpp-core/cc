@@ -8,8 +8,8 @@
 TEST(Pipe, Basic)
 {
     core::cc::pipe::istream is("echo uno");
-    strings lines;
-    string line;
+    std::vector<std::string> lines;
+    std::string line;
     while (std::getline(is, line))
 	lines.push_back(line);
 
@@ -29,7 +29,7 @@ TEST(Pipe, MultipleThreadsFailure)
 					     for (size_t i = 0; i < NumberRuns; ++i)
 					     {
 						 core::cc::pipe::istream is("echo uno");
-						 string line;
+						 std::string line;
 						 if (not std::getline(is, line))
 						     ++failure_count;
 					     }
@@ -57,7 +57,7 @@ TEST(Pipe, MultipleThreadsSuccess)
 					     for (size_t i = 0; i < NumberRuns; ++i)
 					     {
 						 core::cc::pipe::istream is("echo uno", 5);
-						 string line;
+						 std::string line;
 						 if (not std::getline(is, line))
 						     ++failure_count;
 					     }

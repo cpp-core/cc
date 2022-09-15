@@ -7,9 +7,9 @@ namespace core::cc::ring {
 
 void DependencyGraph::configure(const nlj::json& j) {
     for (const auto& [key, jval] : j.items()) {
-	auto bs = get_or_else<strings>(jval, "rw", strings{});
-	auto rbs = get_or_else<strings>(jval, "read", strings{});
-	auto wbs = get_or_else<strings>(jval, "write", strings{});
+	auto bs = get_or_else<strings>(jval, "rw", std::vector<std::string>{});
+	auto rbs = get_or_else<strings>(jval, "read", std::vector<std::string>{});
+	auto wbs = get_or_else<strings>(jval, "write", std::vector<std::string>{});
 
 	for (const auto& b : bs) {
 	    read_depends_[key].push_back(b);
@@ -29,26 +29,26 @@ void DependencyGraph::configure(const nlj::json& j) {
     }
 }
 
-size_t DependencyGraph::size(const string& id) const {
+size_t DependencyGraph::size(const std::string& id) const {
     if (auto iter = sizes_.find(id); iter != sizes_.end())
 	return iter->second;
     throw runtime_error("size for id {} not found", id);
 }
 
-size_t DependencyGraph::size(const string& id, int i) const {
+size_t DependencyGraph::size(const std::string& id, int i) const {
     auto source_id = source(id, i);
     if (auto iter = sizes_.find(source_id); iter != sizes_.end())
 	return iter->second;
     throw runtime_error("size for {}'th source of id {} not found: {}", id, i, source_id);
 }
 
-strings DependencyGraph::sources(const string& id) const {
+strings DependencyGraph::sources(const std::string& id) const {
     if (auto iter = read_depends_.find(id); iter != read_depends_.end())
 	return iter->second;
-    return strings{};
+    return std::vector<std::string>{};
 }
     
-string DependencyGraph::source(const string& id, int i) const {
+string DependencyGraph::source(const std::string& id, int i) const {
     if (auto iter = read_depends_.find(id); iter != read_depends_.end()) {
 	if (i < iter->second.size())
 	    return iter->second[i];
@@ -58,7 +58,7 @@ string DependencyGraph::source(const string& id, int i) const {
     throw core::runtime_error("no read dependencies found for id {}", id);
 }
     
-void DependencyGraph::register_cursor(Cursor *cursor, const string& id) {
+void DependencyGraph::register_cursor(Cursor *cursor, const std::string& id) {
     if (cursors_.find(id) != cursors_.end())
 	throw runtime_error("Attempt to register duplicate cursor id in depdency graph: {}", id);
     cursors_[id] = cursor;
@@ -72,7 +72,7 @@ void DependencyGraph::wait_for_all_registrations() {
     cond_.wait(reg_lock, [this]{ return unregistered_.empty(); });
 }
 
-Cursor *DependencyGraph::get_cursor(const string& id) {
+Cursor *DependencyGraph::get_cursor(const std::string& id) {
     if (auto iter = cursors_.find(id); iter != cursors_.end())
 	return iter->second;
     throw runtime_error("cursor for id {} not found");

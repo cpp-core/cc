@@ -10,7 +10,7 @@ constexpr size_t NumberSamples = 32;
 
 TEST(WriteToStream, Basic)
 {
-    for (auto str : coro::sampler<string>(0, 8 * 1024) | coro::take(NumberSamples))
+    for (auto str : coro::sampler<std::string>(0, 8 * 1024) | coro::take(NumberSamples))
     {
 	core::cc::queue::SourceSpSc<char> source(str);
 	std::stringstream sink;

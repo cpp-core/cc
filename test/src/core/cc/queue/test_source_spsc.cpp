@@ -18,7 +18,7 @@ TEST(SourceSpSc, Strings)
     for (auto str : coro::sampler<string>(0, 64) | coro::take(NumberSamples))
     {
 	core::cc::queue::SourceSpSc source{str};
-	string result;
+	std::string result;
 	char ch;
 	while (source.pop(ch))
 	    result.push_back(ch);

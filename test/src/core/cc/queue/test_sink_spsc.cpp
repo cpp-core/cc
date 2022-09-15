@@ -12,7 +12,7 @@ static const size_t NumberSamples = 32;
 
 TEST(SinkSpSc, Strings)
 {
-    for (auto str : coro::sampler<string>(0, 64) | coro::take(NumberSamples))
+    for (auto str : coro::sampler<std::string>(0, 64) | coro::take(NumberSamples))
     {
 	core::cc::queue::SinkSpSc<char> sink;
 	for (auto ch : str)
@@ -24,7 +24,7 @@ TEST(SinkSpSc, Strings)
 template<class T>
 void check()
 {
-    for (auto vec : coro::sampler<vector<T>>(1, 64) | coro::take(NumberSamples))
+    for (auto vec : coro::sampler<std::vector<T>>(1, 64) | coro::take(NumberSamples))
     {
 	core::cc::queue::SinkSpSc<T> sink;
 	for (auto elem : vec)
@@ -35,10 +35,10 @@ void check()
 
 TEST(SinkSpSc, TypeToType)
 {
-    check<int8>();
-    check<int16>();
-    check<int32>();
-    check<int64>();
+    check<std::int8_t>();
+    check<std::int16_t>();
+    check<std::int32_t>();
+    check<std::int64_t>();
     check<std::uint8_t>();
     check<std::uint16_t>();
     check<std::uint32_t>();

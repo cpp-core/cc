@@ -9,11 +9,11 @@ namespace core::cc::ring {
 
 class DependencyGraph {
 public:
-    using Node = std::pair<string,Cursor*>;
+    using Node = std::pair<std::string,Cursor*>;
     using Nodes = std::vector<Node>;
-    using NodeMap = std::map<string,Cursor*>;
-    using AdjancencyMap = std::map<string,std::vector<std::string>>;
-    using SizeMap = std::map<string,size_t>;
+    using NodeMap = std::map<std::string,Cursor*>;
+    using AdjancencyMap = std::map<std::string,std::vector<std::string>>;
+    using SizeMap = std::map<std::string,size_t>;
 
     // Configure the dependency graph based on <graph>.
     void configure(const nlj::json& graph);
@@ -54,7 +54,7 @@ private:
 
     std::mutex mutex_;
     std::condition_variable cond_;
-    std::set<string> unregistered_;
+    std::set<std::string> unregistered_;
     NodeMap cursors_;
     AdjancencyMap write_depends_, read_depends_;
     SizeMap sizes_;

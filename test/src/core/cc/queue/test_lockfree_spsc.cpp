@@ -9,7 +9,7 @@
 using ::testing::StaticAssertTypeEq;
 
 template<class T>
-void consumer(T& queue, const ints& data)
+void consumer(T& queue, const std::vector<int>& data)
 {
     int i = 0, n;
     while (queue.pop(n))
@@ -56,8 +56,8 @@ TEST(LockFreeSpSc, Throughput)
 {
     for (auto i = 0; i < 1; ++i)
     {
-	string input(1'000, ' ');
-	string output(1'000, '.');
+	std::string input(1'000, ' ');
+	std::string output(1'000, '.');
 	core::cc::queue::LockFreeSpSc<char> queue{8, 4};
 	core::cc::scoped_task producer([&]() { queue.push(input); queue.push_sentinel(); });
 	auto ptr = output.data();

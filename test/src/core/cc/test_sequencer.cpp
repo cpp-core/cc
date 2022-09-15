@@ -8,7 +8,7 @@
 
 using ::testing::StaticAssertTypeEq;
 
-void reduce(size_t idx, core::cc::Sequencer& gate, size_ts& data)
+void reduce(size_t idx, core::cc::Sequencer& gate, std::vector<size_t>& data)
 {
     gate.wait_for(idx);
     data.push_back(idx);
@@ -20,7 +20,7 @@ TEST(ConcurrentSequencer, Example0)
     const size_t number_threads = 32;
     core::cc::Sequencer gate;
 
-    size_ts data;
+    std::vector<size_t> data;
     std::vector<std::thread> threads;
     for (size_t idx = 0; idx < number_threads; ++idx)
 	threads.emplace_back(std::thread([=,&gate,&data]() { reduce(idx, gate, data); }));
