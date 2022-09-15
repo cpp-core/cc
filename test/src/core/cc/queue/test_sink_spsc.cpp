@@ -39,10 +39,10 @@ TEST(SinkSpSc, TypeToType)
     check<int16>();
     check<int32>();
     check<int64>();
-    check<uint8>();
-    check<uint16>();
-    check<uint32>();
-    check<uint64>();
+    check<std::uint8_t>();
+    check<std::uint16_t>();
+    check<std::uint32_t>();
+    check<std::uint64_t>();
     check<real32>();
     check<real64>();
 }
