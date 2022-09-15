@@ -6,9 +6,6 @@
 #include <vector>
 #include "core/cc/barrier.h"
 #include "core/cc/latch.h"
-#include "core/chrono/chrono.h"
-
-using namespace chron;
 
 const int NumberThreads = 32;
 const int NumberSyncs = 100;

@@ -1,12 +1,12 @@
 // Copyright 2021, 2022 by Mark Melton
 //
 
+#include <chrono>
 #include <gtest/gtest.h>
 #include <thread>
 #include "core/cc/executor.h"
-#include "core/chrono/chrono.h"
 
-using namespace chron;
+using namespace std::chrono_literals;
 
 TEST(ConcurrentExecutor, ConcurrentTasks)
 {
