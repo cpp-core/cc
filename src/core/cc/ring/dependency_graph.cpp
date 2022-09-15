@@ -7,9 +7,9 @@ namespace core::cc::ring {
 
 void DependencyGraph::configure(const nlj::json& j) {
     for (const auto& [key, jval] : j.items()) {
-	auto bs = get_or_else<strings>(jval, "rw", std::vector<std::string>{});
-	auto rbs = get_or_else<strings>(jval, "read", std::vector<std::string>{});
-	auto wbs = get_or_else<strings>(jval, "write", std::vector<std::string>{});
+	auto bs = get_or_else<std::vector<std::string>>(jval, "rw", std::vector<std::string>{});
+	auto rbs = get_or_else<std::vector<std::string>>(jval, "read", std::vector<std::string>{});
+	auto wbs = get_or_else<std::vector<std::string>>(jval, "write",std::vector<std::string>{});
 
 	for (const auto& b : bs) {
 	    read_depends_[key].push_back(b);
@@ -42,13 +42,13 @@ size_t DependencyGraph::size(const std::string& id, int i) const {
     throw runtime_error("size for {}'th source of id {} not found: {}", id, i, source_id);
 }
 
-strings DependencyGraph::sources(const std::string& id) const {
+std::vector<std::string> DependencyGraph::sources(const std::string& id) const {
     if (auto iter = read_depends_.find(id); iter != read_depends_.end())
 	return iter->second;
     return std::vector<std::string>{};
 }
     
-string DependencyGraph::source(const std::string& id, int i) const {
+std::string DependencyGraph::source(const std::string& id, int i) const {
     if (auto iter = read_depends_.find(id); iter != read_depends_.end()) {
 	if (i < iter->second.size())
 	    return iter->second[i];

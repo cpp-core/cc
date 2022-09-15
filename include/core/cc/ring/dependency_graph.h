@@ -2,6 +2,7 @@
 //
 
 #pragma once
+#include <set>
 #include "core/cc/ring/processor.h"
 #include "core/extra/json/nljson.h"
 

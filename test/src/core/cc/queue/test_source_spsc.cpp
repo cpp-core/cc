@@ -51,7 +51,7 @@ void check()
 
 #define CODE(A,B) check<A,B>();
 #define CODE_SEQ(A) CODE(CORE_PP_HEAD_SEQ(A), CORE_PP_SECOND_SEQ(A))
-#define TYPES() (int8, int16, int32, int64, std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t)
+#define TYPES() (std::int8_t, std::int16_t, std::int32_t, std::int64_t, std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t)
 #define PRODUCT() CORE_PP_EVAL_CARTESIAN_PRODUCT_SEQ(TYPES(), TYPES())
 
 TEST(SourceSpSc, TypeToType)
