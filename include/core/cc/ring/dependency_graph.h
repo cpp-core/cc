@@ -4,7 +4,7 @@
 #pragma once
 #include <set>
 #include "core/cc/ring/processor.h"
-#include "core/extra/json/nljson.h"
+#include "core/util/json.h"
 
 namespace core::cc::ring {
 
@@ -17,7 +17,7 @@ public:
     using SizeMap = std::map<std::string,size_t>;
 
     // Configure the dependency graph based on <graph>.
-    void configure(const nlj::json& graph);
+    void configure(const json& graph);
 
     // Return the size for the cursor <id>.
     size_t size(const std::string& id) const;

@@ -2,10 +2,12 @@
 //
 
 #include "core/cc/ring/dependency_graph.h"
+#include "core/util/exception.h"
+#include "core/util/json.h"
 
 namespace core::cc::ring {
 
-void DependencyGraph::configure(const nlj::json& j) {
+void DependencyGraph::configure(const json& j) {
     for (const auto& [key, jval] : j.items()) {
 	auto bs = get_or_else<std::vector<std::string>>(jval, "rw", std::vector<std::string>{});
 	auto rbs = get_or_else<std::vector<std::string>>(jval, "read", std::vector<std::string>{});

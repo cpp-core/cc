@@ -10,7 +10,7 @@ namespace ring = core::cc::ring;
 
 TEST(DependencyGraph, Simple)
 {
-    nlj::json j = {
+    json j = {
 	{ "replayer", {
 		{ "size", 1024 },
 		{ "write", { "sink" }}

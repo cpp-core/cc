@@ -1,9 +1,9 @@
 cmake_minimum_required (VERSION 3.22 FATAL_ERROR)
-project (cxx_core_fp VERSION 0.1 LANGUAGES C CXX)
+project (cxx_core_cc VERSION 0.1 LANGUAGES C CXX)
 
 # Make including this file idempotent
 #
-if(TARGET cxx_core_fp)
+if(TARGET cxx_core_cc)
   return()
 endif()
 
@@ -30,15 +30,17 @@ option(CORE_FP_DOCS "Generate the docs." OFF)
 # Add our dependencies
 #
 include(GNUInstallDirs)
-find_package(cxx_core_mp)
+find_package(cxx_coro_stream REQUIRED)
+find_package(fmt REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 # Output configuration
 #
-message("-- cxx-core-fp: Configuration: ${CMAKE_CURRENT_SOURCE_DIR}")
-message("-- cxx-core-fp: Included from: ${CMAKE_SOURCE_DIR}")
-message("-- cxx-core-fp: CORE_TUPLE_TEST ${CORE_FP_TEST}")
-message("-- cxx-core-fp: CORE_TUPLE_DOCS ${CORE_FP_DOCS}")
-message("-- cxx-core-fp: CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
+message("-- cxx-core-cc: Configuration: ${CMAKE_CURRENT_SOURCE_DIR}")
+message("-- cxx-core-cc: Included from: ${CMAKE_SOURCE_DIR}")
+message("-- cxx-core-cc: CORE_CC_TEST ${CORE_CC_TEST}")
+message("-- cxx-core-cc: CORE_CC_DOCS ${CORE_CC_DOCS}")
+message("-- cxx-core-cc: CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
 
 # Compilation
 #
@@ -51,9 +53,30 @@ add_compile_options(-stdlib=libc++)
 add_compile_options(-O)
 add_link_options(-stdlib=libc++)
 
-add_library(cxx_core_fp INTERFACE)
-target_include_directories(cxx_core_fp
-  INTERFACE
+set(SOURCES
+  cc/barrier
+  cc/executor
+  cc/gate
+  cc/latch
+  cc/pipe
+  cc/ring/cursor
+  cc/ring/dependency_graph)
+
+foreach(NAME ${SOURCES})
+  list(APPEND FILES "src/core/${NAME}.cpp")
+endforeach()
+
+add_library(cxx_core_cc ${FILES})
+
+set(LIBRARIES
+  cxx_coro_stream::cxx_coro_stream
+  fmt::fmt
+  nlohmann_json::nlohmann_json)
+
+target_link_libraries(cxx_core_cc PUBLIC ${LIBRARIES})
+
+target_include_directories(cxx_core_cc
+  PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
@@ -77,5 +100,5 @@ endif()
 # Installation
 #
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/install_config.cmake)
-install_config(cxx_core_fp)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/core/fp DESTINATION include/core/)
+install_config(cxx_core_cc)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/core/cc DESTINATION include/core)
