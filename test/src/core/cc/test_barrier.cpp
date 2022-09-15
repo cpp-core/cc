@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include <thread>
+#include <vector>
 #include "core/cc/barrier.h"
 #include "core/cc/latch.h"
 #include "core/chrono/chrono.h"
@@ -24,7 +25,7 @@ TEST(ConcurrentBarrier, Example0)
     }};
     core::cc::Latch l{NumberThreads};
     
-    vector<std::thread> threads;
+    std::vector<std::thread> threads;
     for (auto i = 0; i < NumberThreads; ++i)
 	threads.emplace_back([&]() {
 	    for (auto j = 0; j < NumberSyncs; ++j) {

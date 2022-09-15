@@ -2,6 +2,8 @@
 //
 
 #include <gtest/gtest.h>
+#include <string>
+#include <vector>
 #include "core/cc/queue/source_spsc.h"
 #include "core/pp/seq.h"
 #include "core/pp/map.h"
@@ -15,7 +17,7 @@ static const size_t NumberSamples = 32;
 
 TEST(SourceSpSc, Strings)
 {
-    for (auto str : coro::sampler<string>(0, 64) | coro::take(NumberSamples))
+    for (auto str : coro::sampler<std::string>(0, 64) | coro::take(NumberSamples))
     {
 	core::cc::queue::SourceSpSc source{str};
 	std::string result;
@@ -30,7 +32,7 @@ template<class T, class U>
 void check()
 {
     size_t count{0};
-    for (auto vec : coro::sampler<vector<T>>(1, 64))
+    for (auto vec : coro::sampler<std::vector<T>>(1, 64))
     {
 	if ((sizeof(T) * vec.size()) % sizeof(U) != 0)
 	    continue;
