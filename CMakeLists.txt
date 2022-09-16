@@ -12,7 +12,7 @@ endif()
 # Build the tests and set directories if this is the master project
 #
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-  set(CORE_FP_TEST ON CACHE BOOL "Generate the tests.")
+  set(CORE_CC_TEST ON CACHE BOOL "Generate the tests.")
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -24,8 +24,8 @@ endif()
 
 # Options for generating tests and documentation.
 #
-option(CORE_FP_TEST "Generate the tests." OFF)
-option(CORE_FP_DOCS "Generate the docs." OFF)
+option(CORE_CC_TEST "Generate the tests." OFF)
+option(CORE_CC_DOCS "Generate the docs." OFF)
 
 # Add our dependencies
 #
@@ -82,7 +82,7 @@ target_include_directories(cxx_core_cc
 
 # Optionally configure the tests
 #
-if(CORE_FP_TEST)
+if(CORE_CC_TEST)
   enable_testing()
   if (NOT TARGET check)
     add_custom_target(check ${CMAKE_CTEST_COMMAND})
@@ -93,7 +93,7 @@ endif()
 
 # Optionally configure the documentation
 #
-# if(CORE_FP_DOCS)
+# if(CORE_CC_DOCS)
 #   add_subdirectory(docs)
 # endif()
 
