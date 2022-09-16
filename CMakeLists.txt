@@ -71,7 +71,7 @@ add_library(cxx_core_cc ${FILES})
 
 set(LIBRARIES
   cxx_coro_stream::cxx_coro_stream
-  cxx_coro_util::cxx_coro_util
+  cxx_core_util::cxx_core_util
   fmt::fmt
   nlohmann_json::nlohmann_json)
 
