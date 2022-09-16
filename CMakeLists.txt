@@ -31,6 +31,7 @@ option(CORE_CC_DOCS "Generate the docs." OFF)
 #
 include(GNUInstallDirs)
 find_package(cxx_coro_stream REQUIRED)
+find_package(cxx_core_util REQUIRED)
 find_package(fmt REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
@@ -70,6 +71,7 @@ add_library(cxx_core_cc ${FILES})
 
 set(LIBRARIES
   cxx_coro_stream::cxx_coro_stream
+  cxx_coro_util::cxx_coro_util
   fmt::fmt
   nlohmann_json::nlohmann_json)
 
