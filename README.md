@@ -1,4 +1,4 @@
-[![Build and Unit Test](https://github.com/melton1968/cxx-core-cc/actions/workflows/build.yaml/badge.svg)](https://github.com/melton1968/cxx-core-cc/actions/workflows/build.yaml)
+[![Build and Unit Test](https://github.com/cpp-core/cc/actions/workflows/build.yaml/badge.svg)](https://github.com/cpp-core/cc/actions/workflows/build.yaml)
 
 # Functional Programming
 
@@ -23,7 +23,7 @@ Primitives to support a functional programming style.
 	
 ### Standalone
 
-	git clone git@github.com:melton1968/cxx-core-fp
+	git clone git@github.com:cpp-core/fp
 	mkdir cxx-core-fp/build && cd cxx-core-fp/build
     CC=clang-mp-11 CXX=clang++-mp-11 cmake -DCMAKE_INSTALL_PREFIX=$HOME/opt -DCORE_FP_TEST=ON ..
 	make check    # Run tests
