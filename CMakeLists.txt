@@ -1,31 +1,10 @@
-cmake_minimum_required (VERSION 3.22 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.24 FATAL_ERROR)
 project (cc VERSION 0.1 LANGUAGES C CXX)
 
 # Make including this file idempotent
 #
-if(TARGET cc)
+if(TARGET cc OR TARGET cc::cc)
   return()
-endif()
-
-# Configuration variables.
-#
-# Build the tests and set directories if this is the master project
-#
-if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-  set(CC_TEST ON CACHE BOOL "Generate the tests.")
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-  set(CMAKE_DOCS_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/docs)
-  
-  # Have cmake output the compilation commands and create a link to it
-  # from the project root directory so the language server can find
-  # it.
-  #
-  set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink
-    ${CMAKE_BINARY_DIR}/compile_commands.json
-    ${CMAKE_SOURCE_DIR}/compile_commands.json)
 endif()
 
 # Options for generating tests and documentation.
@@ -33,13 +12,38 @@ endif()
 option(CC_TEST "Generate the tests." OFF)
 option(CC_DOCS "Generate the docs." OFF)
 
+# If this is the current project.
+#
+if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+  # Include the cmake helpers
+  #
+  include(${CPP_CORE_SOURCE_DIR}/projects/cmake/utils/all.cmake)
+  include(${CPP_CORE_SOURCE_DIR}/projects/cmake/recipes/all.cmake)
+  
+  # Geneerte the tests
+  #
+  set(CC_TEST ON CACHE BOOL "Generate the tests." FORCE)
+
+  # compile_commands.json
+  #
+  symlink_compile_commands()
+
+  # Convenience targets for git operations
+  #
+  make_submodule_pull_target()
+endif()
+
+# Put executables in the top-level binary directory
+#
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # Output configuration
 #
 message("-- cc: Configuration: ${CMAKE_CURRENT_SOURCE_DIR}")
 message("-- cc: Included from: ${CMAKE_SOURCE_DIR}")
-message("-- cc: CC_TEST ${CC_TEST}")
-message("-- cc: CC_DOCS ${CC_DOCS}")
-message("-- cc: CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
+message("-- cc: Install prefix: ${CMAKE_INSTALL_PREFIX}")
+message("-- cc: test ${CC_TEST}")
+message("-- cc: docs ${CC_DOCS}")
 
 # Setup compilation before adding dependencies
 #
@@ -54,8 +58,7 @@ add_link_options(-stdlib=libc++)
 
 # Add our dependencies
 #
-include(cmake/cpp_core_find_package.cmake)
-cpp_core_find_package(util)
+add_util()
 
 # Build the library
 #
@@ -85,11 +88,7 @@ target_link_libraries(cc PUBLIC util::util)
 # Optionally configure the tests
 #
 if(CC_TEST)
-  enable_testing()
-  if (NOT TARGET check)
-    add_custom_target(check ${CMAKE_CTEST_COMMAND})
-    add_custom_target(check_detail ${CMAKE_CTEST_COMMAND} -V)
-  endif()
+  add_gtest()
   add_subdirectory(test)
 endif()
 
@@ -101,6 +100,4 @@ endif()
 
 # Installation
 #
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/install_config.cmake)
 install_config(cc)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/core/cc DESTINATION include/core)
