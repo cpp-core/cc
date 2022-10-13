@@ -82,12 +82,7 @@ add_library(cc::cc ALIAS cc)
 file(GLOB_RECURSE PUBLIC_INCLUDE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} include/*.h)
 target_sources(cc PUBLIC FILE_SET HEADERS BASE_DIRS include FILES ${PUBLIC_INCLUDE_FILES})
 
-# Define the header files for this library.
-#
-file(GLOB_RECURSE PUBLIC_INCLUDE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} include/*.h)
-target_sources(cc PUBLIC FILE_SET HEADERS BASE_DIRS include FILES ${PUBLIC_INCLUDE_FILES})
-
-target_link_libraries(cc PUBLIC ${LIBRARIES})
+target_link_libraries(cc PUBLIC util::util)
 
 # Optionally configure the tests
 #
