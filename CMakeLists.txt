@@ -7,22 +7,17 @@ if(TARGET cc OR TARGET cc::cc)
   return()
 endif()
 
-# Options for generating tests and documentation.
-#
-option(CC_TEST "Generate the tests." OFF)
-option(CC_DOCS "Generate the docs." OFF)
-
 # If this is the current project.
 #
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-  # Include the cmake helpers
+  # Laod the cmake recipes and utilities.
   #
-  include(${CPP_CORE_SOURCE_DIR}/projects/cmake/utils/all.cmake)
-  include(${CPP_CORE_SOURCE_DIR}/projects/cmake/recipes/all.cmake)
-  
-  # Geneerte the tests
+  include(${CMAKE_CURRENT_LIST_DIR}/cmake/load_cmake_helpers.cmake)
+
+  # Options for generating tests and documentation.
   #
-  set(CC_TEST ON CACHE BOOL "Generate the tests." FORCE)
+  option(CC_TEST "Generate the tests." ON)
+  option(CC_DOCS "Generate the docs." OFF)
 
   # compile_commands.json
   #
@@ -31,6 +26,10 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
   # Convenience targets for git operations
   #
   make_submodule_pull_target()
+  
+else()
+  option(CC_TEST "Generate the tests." OFF)
+  option(CC_DOCS "Generate the docs." OFF)
 endif()
 
 # Put executables in the top-level binary directory
@@ -42,8 +41,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 message("-- cc: Configuration: ${CMAKE_CURRENT_SOURCE_DIR}")
 message("-- cc: Included from: ${CMAKE_SOURCE_DIR}")
 message("-- cc: Install prefix: ${CMAKE_INSTALL_PREFIX}")
-message("-- cc: test ${CC_TEST}")
-message("-- cc: docs ${CC_DOCS}")
+message("-- cc: test: ${CC_TEST}")
+message("-- cc: docs: ${CC_DOCS}")
 
 # Setup compilation before adding dependencies
 #
@@ -83,7 +82,12 @@ add_library(cc::cc ALIAS cc)
 file(GLOB_RECURSE PUBLIC_INCLUDE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} include/*.h)
 target_sources(cc PUBLIC FILE_SET HEADERS BASE_DIRS include FILES ${PUBLIC_INCLUDE_FILES})
 
-target_link_libraries(cc PUBLIC util::util)
+# Define the header files for this library.
+#
+file(GLOB_RECURSE PUBLIC_INCLUDE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} include/*.h)
+target_sources(cc PUBLIC FILE_SET HEADERS BASE_DIRS include FILES ${PUBLIC_INCLUDE_FILES})
+
+target_link_libraries(cc PUBLIC ${LIBRARIES})
 
 # Optionally configure the tests
 #
